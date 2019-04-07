@@ -4,7 +4,18 @@
   "description": "Template for creating websites with Gulp automation",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "prebuild": "rimraf ./dist && mkdir ./dist",
+    "build": "npm run prebuild && npm-run-all --parallel build:*",
+    "build:styles": "postcss ./src/css/styles.css -o ./dist/css/styles.css",
+    "build:img": "cpx ./src/img/**/*.{png,svg,jpg,jpeg} ./dist/img",
+    "build:js": "webpack",
+    "build:html": "cpx ./src/**/*.html ./dist/",
+    "serve": "npm run build && browser-sync start -s -f $(pwd)/dist/ --no-notify --port 8080",
+    "prod": "npm run build && npm run prod:*",
+    "prod:img": "imagemin ./src/img/**/* -o ./dist/img/**/* -p imagemin-jpeg-recompress",
+    "prod:styles": "postcss ./dist/css/styles.css --no-map -r -u cssnano",
+    "prod:js": "minify ./dist/js/main.js"
   },
   "repository": {
     "type": "git",
@@ -20,12 +31,37 @@
   },
   "homepage": "https://github.com/JoelVenable/build-template#readme",
   "devDependencies": {
-    "gulp": "^4.0.0",
-    "gulp-watch": "^5.0.1",
+    "@babel/core": "^7.4.3",
+    "@babel/preset-env": "^7.4.3",
+    "autoprefixer": "^9.5.0",
+    "babel-cli": "^6.26.0",
+    "babel-loader": "^8.0.5",
+    "browser-sync": "^2.26.3",
+    "cpx": "^1.5.0",
+    "cssnano": "^4.1.10",
+    "cssnext": "^1.8.4",
+    "del-cli": "^1.1.0",
+    "imagemin": "^6.1.0",
+    "imagemin-cli": "^4.0.1",
+    "imagemin-jpeg-recompress": "^6.0.0",
+    "minify": "^4.1.1",
+    "npm-run-all": "^4.1.5",
+    "path": "^0.12.7",
+    "postcss": "^7.0.14",
+    "postcss-cli": "^6.1.2",
+    "postcss-import": "^12.0.1",
+    "postcss-nested": "^4.1.2",
+    "postcss-preset-env": "^6.6.0",
+    "postcss-simple-vars": "^5.0.2",
+    "rimraf": "^2.6.3",
     "ts-node": "^8.0.3",
-    "typescript": "^3.4.2"
+    "typescript": "^3.4.2",
+    "watch": "^1.0.2",
+    "webpack": "^4.29.6",
+    "webpack-cli": "^3.3.0"
   },
   "dependencies": {
+    "modernizr": "^3.7.1",
     "normalize.css": "^8.0.1"
   }
 }
