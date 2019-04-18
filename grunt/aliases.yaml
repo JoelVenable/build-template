@@ -1,0 +1,6 @@
+default:
+  - "eslint"
+  - "http-server"
+  - "postcss"
+  - "bgShell:launchAPI"
+  - "watch"
